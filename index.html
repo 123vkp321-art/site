@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ПРИЧАЛ — импорт автомобилей из Кореи и Китая под ключ</title>
+<meta name="description" content="Подбираем, осматриваем и привозим автомобили из Кореи и Китая под ключ. Фиксированная цена в договоре, фото- и видеоосмотр, доставка по всей России.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1E2B'/%3E%3Ccircle cx='16' cy='11' r='3.4' fill='none' stroke='%23BE8A3E' stroke-width='2'/%3E%3Cpath d='M16 14.4V25M9 20c1.8 3 4.2 4.6 7 4.6s5.2-1.6 7-4.6' fill='none' stroke='%23BE8A3E' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0E1E2B;
+    --navy-2:#152A3C;
+    --navy-3:#1E3B54;
+    --chart:#E8EDE8;
+    --card:#FFFFFF;
+    --brass:#BE8A3E;
+    --signal:#B23F32;
+    --sea:#2C6659;
+    --ink:#0E1E2B;
+    --ink-muted:rgba(14,30,43,.64);
+    --ink-faint:rgba(14,30,43,.42);
+    --line:rgba(14,30,43,.14);
+    --line-invert:rgba(239,237,227,.18);
+    --cream:#EFEDE3;
+    --radius:16px;
+    --container:1180px;
+    --ff-display:'Space Grotesk',sans-serif;
+    --ff-body:'Manrope',sans-serif;
+    --ff-mono:'IBM Plex Mono',monospace;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--ff-body);
+    color:var(--ink);
+    background:var(--chart);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{font-family:var(--ff-display);margin:0;line-height:1.12;letter-spacing:-.01em;}
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font:inherit;cursor:pointer;}
+  section[id]{scroll-margin-top:88px;}
+
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--signal);color:#fff;padding:10px 16px;border-radius:0 0 8px 0;z-index:200;}
+  .skip-link:focus{left:0;}
+
+  :focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+
+  .container{max-width:var(--container);margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-family:var(--ff-mono);
+    font-size:.74rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--brass);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{content:'';width:16px;height:1px;background:var(--brass);display:inline-block;}
+
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.5rem);margin-top:12px;}
+  .section-head p{margin-top:14px;color:var(--ink-muted);font-size:1.02rem;}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 26px;border-radius:999px;border:1px solid transparent;
+    font-family:var(--ff-body);font-weight:700;font-size:.95rem;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .btn--primary{background:var(--signal);color:#fff;}
+  .btn--primary:hover{transform:translateY(-2px);background:#9c342a;}
+  .btn--ghost{border-color:var(--line);color:var(--ink);background:transparent;}
+  .btn--ghost:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .btn--ghost-invert{border-color:var(--line-invert);color:var(--cream);}
+  .btn--ghost-invert:hover{border-color:var(--cream);}
+  .btn--block{width:100%;}
+
+  /* ===== Stamp signature element ===== */
+  .stamp{
+    width:128px;height:128px;border-radius:50%;
+    border:2px dashed var(--signal);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    transform:rotate(-9deg);
+    font-family:var(--ff-mono);color:var(--signal);
+    flex:none;
+  }
+  .stamp span{display:block;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;line-height:1.35;padding:0 14px;}
+  .stamp--sea{border-color:var(--sea);color:var(--sea);}
+
+  /* ===== Header ===== */
+  .site-header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(14,30,43,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-invert);
+  }
+  .nav-row{display:flex;align-items:center;justify-content:space-between;height:76px;color:var(--cream);}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--ff-display);font-weight:700;font-size:1.25rem;color:var(--cream);}
+  .logo em{font-style:normal;font-family:var(--ff-mono);font-weight:500;font-size:.66rem;letter-spacing:.1em;color:var(--brass);border:1px solid var(--line-invert);padding:3px 7px;border-radius:6px;margin-left:2px;}
+  .logo svg{flex:none;}
+
+  .nav-links{display:flex;align-items:center;gap:30px;font-size:.92rem;}
+  .nav-links a{color:rgba(239,237,227,.82);transition:color .2s ease;}
+  .nav-links a:hover{color:var(--cream);}
+
+  .nav-actions{display:flex;align-items:center;gap:16px;}
+  .nav-phone{font-family:var(--ff-mono);font-size:.9rem;color:var(--cream);display:none;}
+
+  .burger{display:none;}
+  #nav-toggle{display:none;}
+
+  @media (max-width:920px){
+    .nav-links{
+      position:absolute;top:76px;left:0;right:0;
+      background:var(--navy);
+      flex-direction:column;align-items:stretch;gap:0;
+      max-height:0;overflow:hidden;
+      border-bottom:1px solid var(--line-invert);
+      transition:max-height .3s ease;
+    }
+    .nav-links a{padding:16px 24px;border-top:1px solid var(--line-invert);}
+    #nav-toggle:checked ~ .nav-links{max-height:400px;}
+    .burger{
+      display:flex;flex-direction:column;gap:5px;width:26px;background:none;border:none;padding:4px;
+    }
+    .burger span{height:2px;background:var(--cream);border-radius:2px;}
+    .nav-phone{display:none !important;}
+  }
+  @media (min-width:921px){
+    .nav-phone{display:inline-flex;}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    background:radial-gradient(1100px 500px at 78% -10%, var(--navy-3), transparent 60%), var(--navy);
+    color:var(--cream);
+    padding:72px 0 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:'';position:absolute;inset:0;
+    background-image:radial-gradient(rgba(239,237,227,.06) 1px, transparent 1px);
+    background-size:22px 22px;
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;
+    position:relative;z-index:1;
+  }
+  .hero h1{font-size:clamp(2.3rem,4.6vw,3.6rem);margin-top:18px;max-width:14ch;}
+  .hero-sub{margin-top:20px;max-width:46ch;color:rgba(239,237,227,.8);font-size:1.06rem;}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px;align-items:center;}
+
+  .hero-stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+    margin-top:48px;padding-top:28px;border-top:1px solid var(--line-invert);
+  }
+  .hero-stats .num{font-family:var(--ff-mono);font-size:1.5rem;color:var(--brass);font-weight:600;}
+  .hero-stats .lbl{font-size:.82rem;color:rgba(239,237,227,.68);margin-top:6px;}
+
+  .route-wrap{position:relative;display:flex;justify-content:center;}
+  .route-card{
+    position:absolute;bottom:-18px;left:8px;
+    background:var(--card);color:var(--ink);border-radius:12px;
+    padding:14px 16px;box-shadow:0 18px 40px rgba(0,0,0,.35);
+    font-family:var(--ff-mono);font-size:.78rem;
+    display:flex;align-items:center;gap:10px;
+  }
+  .route-card .dot{width:8px;height:8px;border-radius:50%;background:var(--sea);flex:none;}
+  .route-map{width:100%;max-width:480px;height:auto;}
+  .route-line{stroke-dasharray:5 8;animation:dash 26s linear infinite;}
+  @keyframes dash{to{stroke-dashoffset:-600;}}
+
+  @media (max-width:920px){
+    .hero-grid{grid-template-columns:1fr;}
+    .route-wrap{order:-1;margin-bottom:12px;}
+    .route-card{position:static;margin-top:14px;display:inline-flex;}
+  }
+  @media (max-width:560px){
+    .hero-stats{grid-template-columns:1fr;gap:14px;}
+  }
+
+  /* ===== Sections generic ===== */
+  section{padding:88px 0;}
+  .section--tight{padding:64px 0;}
+  .bg-card{background:var(--card);}
+
+  /* Directions */
+  .directions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .direction-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 26px;transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .direction-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(14,30,43,.08);}
+  .direction-card .idx{font-family:var(--ff-mono);color:var(--ink-faint);font-size:.78rem;}
+  .direction-card h3{font-size:1.28rem;margin-top:14px;}
+  .direction-card p{margin-top:12px;color:var(--ink-muted);font-size:.96rem;}
+  .direction-card .tag{
+    display:inline-block;margin-top:18px;font-family:var(--ff-mono);font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--sea);
+    border:1px solid var(--line);padding:6px 10px;border-radius:8px;
+  }
+
+  @media (max-width:920px){.directions-grid{grid-template-columns:1fr;}}
+
+  /* Process */
+  .process{background:var(--navy);color:var(--cream);}
+  .process-track{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-bottom:52px;border-top:1px solid var(--line-invert);border-bottom:1px solid var(--line-invert);}
+  .process-track div{
+    font-family:var(--ff-mono);font-size:.72rem;text-align:center;padding:14px 4px;
+    color:rgba(239,237,227,.55);border-right:1px solid var(--line-invert);
+  }
+  .process-track div:last-child{border-right:none;}
+  .process-track div.active{color:var(--brass);}
+  .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 30px;}
+  .process-step .step-num{font-family:var(--ff-mono);color:var(--brass);font-size:.85rem;}
+  .process-step h3{font-size:1.15rem;margin-top:10px;}
+  .process-step p{margin-top:10px;color:rgba(239,237,227,.72);font-size:.94rem;}
+
+  @media (max-width:920px){
+    .process-track{grid-template-columns:repeat(3,1fr);}
+    .process-track div:nth-child(3){border-right:none;}
+    .process-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:560px){.process-grid{grid-template-columns:1fr;}}
+
+  /* Features */
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .feature-card{padding:28px 24px;border-radius:var(--radius);border:1px solid var(--line);background:var(--card);}
+  .feature-card .icon{
+    width:44px;height:44px;border-radius:10px;background:var(--chart);
+    display:flex;align-items:center;justify-content:center;color:var(--sea);
+  }
+  .feature-card h3{font-size:1.08rem;margin-top:18px;}
+  .feature-card p{margin-top:10px;color:var(--ink-muted);font-size:.94rem;}
+
+  @media (max-width:920px){.features-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.features-grid{grid-template-columns:1fr;}}
+
+  /* Catalog */
+  .catalog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .model-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 20px;transition:border-color .2s ease, transform .2s ease;
+  }
+  .model-card:hover{border-color:var(--sea);transform:translateY(-3px);}
+  .model-card .flag{font-family:var(--ff-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);}
+  .model-card h4{font-size:1.05rem;margin-top:10px;}
+  .model-card .price{margin-top:10px;font-family:var(--ff-mono);color:var(--sea);font-size:.92rem;}
+  .catalog-note{margin-top:22px;color:var(--ink-faint);font-size:.84rem;font-family:var(--ff-mono);}
+
+  @media (max-width:920px){.catalog-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.catalog-grid{grid-template-columns:1fr;}}
+
+  /* Guarantees */
+  .guarantees{background:var(--navy);color:var(--cream);}
+  .guarantee-head{display:flex;align-items:center;gap:24px;margin-bottom:44px;flex-wrap:wrap;}
+  .guarantees-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .guarantee-card{border:1px solid var(--line-invert);border-radius:var(--radius);padding:26px 22px;}
+  .guarantee-card .icon{color:var(--brass);}
+  .guarantee-card h3{font-size:1.04rem;margin-top:16px;}
+  .guarantee-card p{margin-top:10px;color:rgba(239,237,227,.7);font-size:.92rem;}
+
+  @media (max-width:920px){.guarantees-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.guarantees-grid{grid-template-columns:1fr;}.guarantee-head{flex-direction:column;align-items:flex-start;}}
+
+  /* Testimonials */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .testi-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;}
+  .testi-stars{color:var(--brass);font-family:var(--ff-mono);letter-spacing:.1em;font-size:.85rem;}
+  .testi-card p.quote{margin-top:14px;font-size:.98rem;color:var(--ink);}
+  .testi-who{display:flex;align-items:center;gap:12px;margin-top:20px;}
+  .testi-avatar{
+    width:38px;height:38px;border-radius:50%;background:var(--chart);
+    display:flex;align-items:center;justify-content:center;font-family:var(--ff-mono);
+    font-size:.82rem;color:var(--sea);flex:none;
+  }
+  .testi-who .name{font-weight:700;font-size:.9rem;}
+  .testi-who .city{font-size:.8rem;color:var(--ink-faint);}
+  .testi-note{margin-top:20px;font-family:var(--ff-mono);font-size:.78rem;color:var(--ink-faint);}
+
+  @media (max-width:920px){.testi-grid{grid-template-columns:1fr;}}
+
+  /* FAQ */
+  .faq-list{max-width:820px;margin:0 auto;}
+  details.faq-item{border-bottom:1px solid var(--line);padding:20px 0;}
+  details.faq-item summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+    gap:20px;font-family:var(--ff-display);font-weight:600;font-size:1.02rem;
+  }
+  details.faq-item summary::-webkit-details-marker{display:none;}
+  details.faq-item summary .plus{
+    flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  details.faq-item summary .plus::before,
+  details.faq-item summary .plus::after{content:'';position:absolute;background:var(--ink);}
+  details.faq-item summary .plus::before{width:10px;height:1.6px;}
+  details.faq-item summary .plus::after{width:1.6px;height:10px;transition:transform .2s ease;}
+  details.faq-item[open] summary .plus::after{transform:rotate(90deg) scaleY(0);}
+  details.faq-item p{margin-top:14px;color:var(--ink-muted);font-size:.96rem;max-width:70ch;}
+
+  /* CTA / contact */
+  .contact{background:var(--card);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  .contact-form{display:grid;gap:14px;}
+  .contact-form label{font-family:var(--ff-mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);}
+  .contact-form input,.contact-form textarea{
+    width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--line);
+    font-family:var(--ff-body);font-size:.96rem;background:var(--chart);color:var(--ink);
+  }
+  .contact-form textarea{min-height:96px;resize:vertical;}
+  .form-note{font-size:.78rem;color:var(--ink-faint);margin-top:4px;}
+  .form-success{
+    display:none;margin-top:14px;padding:12px 14px;border-radius:10px;
+    background:rgba(44,102,89,.1);color:var(--sea);font-size:.9rem;font-family:var(--ff-mono);
+  }
+  .form-success.show{display:block;}
+
+  .contact-side .item{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line);}
+  .contact-side .item:first-child{border-top:none;}
+  .contact-side .item .ic{color:var(--sea);flex:none;margin-top:2px;}
+  .contact-side .item .lbl{font-family:var(--ff-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);}
+  .contact-side .item .val{margin-top:4px;font-weight:600;}
+
+  @media (max-width:920px){.contact-grid{grid-template-columns:1fr;}}
+
+  /* Footer */
+  .site-footer{background:var(--navy);color:rgba(239,237,227,.72);padding:64px 0 28px;}
+  .footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;}
+  .footer-brand .logo{margin-bottom:14px;}
+  .footer-brand p{font-size:.92rem;max-width:34ch;}
+  .footer-col h4{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);margin-bottom:16px;}
+  .footer-col ul li{margin-bottom:10px;font-size:.92rem;}
+  .footer-col ul a:hover{color:var(--cream);}
+  .footer-bottom{
+    margin-top:48px;padding-top:24px;border-top:1px solid var(--line-invert);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8rem;
+  }
+  .footer-bottom .legal-note{font-family:var(--ff-mono);color:rgba(239,237,227,.45);max-width:60ch;}
+
+  @media (max-width:920px){.footer-top{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.footer-top{grid-template-columns:1fr;}}
+
+  /* Reveal on scroll (progressive enhancement) */
+  html.js-ready .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
+  html.js-ready .reveal.in{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .route-line{animation:none;}
+    html.js-ready .reveal{opacity:1;transform:none;transition:none;}
+    .direction-card:hover,.model-card:hover,.btn:hover{transform:none;}
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к содержимому</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="#top" class="logo" aria-label="ПРИЧАЛ — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1E3B54"/><circle cx="16" cy="11" r="3.4" fill="none" stroke="#BE8A3E" stroke-width="2"/><path d="M16 14.4V25M9 20c1.8 3 4.2 4.6 7 4.6s5.2-1.6 7-4.6" fill="none" stroke="#BE8A3E" stroke-width="2" stroke-linecap="round"/></svg>
+      ПРИЧАЛ <em>KR·CN → RU</em>
+    </a>
+
+    <input type="checkbox" id="nav-toggle">
+    <nav aria-label="Основная навигация" style="display:flex;align-items:center;">
+      <ul class="nav-links">
+        <li><a href="#directions">Направления</a></li>
+        <li><a href="#process">Как это работает</a></li>
+        <li><a href="#catalog">Каталог</a></li>
+        <li><a href="#reviews">Отзывы</a></li>
+        <li><a href="#faq">Вопросы</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="tel:+70000000000" class="nav-phone">+7 (000) 000-00-00</a>
+      <a href="#contacts" class="btn btn--primary" style="padding:11px 20px;font-size:.88rem;">Оставить заявку</a>
+      <label for="nav-toggle" class="burger" aria-label="Открыть меню"><span></span><span></span><span></span></label>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Импорт из Кореи и Китая</span>
+        <h1>От аукциона в Корее до вашего двора</h1>
+        <p class="hero-sub">Подбираем автомобиль, осматриваем его на месте своими специалистами и привозим под ключ. Цена, зафиксированная в договоре, — и есть цена, которую вы платите в итоге.</p>
+
+        <div class="hero-ctas">
+          <a href="#contacts" class="btn btn--primary">Рассчитать стоимость</a>
+          <a href="#catalog" class="btn btn--ghost-invert">Смотреть каталог</a>
+        </div>
+
+        <div class="hero-stats">
+          <div><div class="num">10–14</div><div class="lbl">дней от покупки до ПТС во Владивостоке</div></div>
+          <div><div class="num">100%</div><div class="lbl">автомобилей с фото- и видеоосмотром</div></div>
+          <div><div class="num">0 ₽</div><div class="lbl">доплат сверх суммы в договоре</div></div>
+        </div>
+      </div>
+
+      <div class="route-wrap">
+        <svg class="route-map" viewBox="0 0 520 420" role="img" aria-label="Схема маршрута доставки: Корея и Китай — Владивосток — ваш город">
+          <path class="route-line" d="M120,86 Q230,54 340,150" fill="none" stroke="#BE8A3E" stroke-width="1.6" opacity=".8"/>
+          <path class="route-line" d="M96,214 Q210,196 340,150" fill="none" stroke="#2C6659" stroke-width="1.6" opacity=".8"/>
+          <path class="route-line" d="M340,150 Q404,232 434,318" fill="none" stroke="#EFEDE3" stroke-width="1.6" opacity=".55"/>
+
+          <circle cx="120" cy="86" r="15" fill="none" stroke="#BE8A3E" stroke-width="1" opacity=".5"/>
+          <circle cx="120" cy="86" r="6" fill="#BE8A3E"/>
+          <text x="120" y="66" text-anchor="middle" fill="#EFEDE3" font-family="IBM Plex Mono" font-size="11" letter-spacing="1">ICN · KR</text>
+
+          <circle cx="96" cy="214" r="15" fill="none" stroke="#2C6659" stroke-width="1" opacity=".5"/>
+          <circle cx="96" cy="214" r="6" fill="#2C6659"/>
+          <text x="96" y="240" text-anchor="middle" fill="#EFEDE3" font-family="IBM Plex Mono" font-size="11" letter-spacing="1">SHA · CN</text>
+
+          <circle cx="340" cy="150" r="6" fill="#EFEDE3"/>
+          <text x="340" y="130" text-anchor="middle" fill="#EFEDE3" font-family="IBM Plex Mono" font-size="11" letter-spacing="1">VVO</text>
+
+          <circle cx="434" cy="318" r="17" fill="none" stroke="#EFEDE3" stroke-width="1.4" stroke-dasharray="3 4"/>
+          <circle cx="434" cy="318" r="6" fill="#B23F32"/>
+          <text x="434" y="344" text-anchor="middle" fill="#EFEDE3" font-family="IBM Plex Mono" font-size="11" letter-spacing="1">ВАШ ГОРОД</text>
+        </svg>
+        <div class="route-card"><span class="dot"></span> Груз в пути · этап 04 из 06</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECTIONS -->
+  <section id="directions">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Направления</span>
+        <h2>Выберите, откуда везём</h2>
+        <p>Работаем на двух рынках напрямую, без посредников — свои представители в Корее и Китае осматривают автомобиль до того, как вы за него заплатите.</p>
+      </div>
+
+      <div class="directions-grid">
+        <div class="direction-card reveal">
+          <span class="idx">01</span>
+          <h3>Авто из Кореи</h3>
+          <p>Hyundai, Kia, Genesis, а также европейские и премиальные модели с южнокорейских аукционов — с полным сопровождением сделки от подбора до ПТС.</p>
+          <span class="tag">15+ марок</span>
+        </div>
+        <div class="direction-card reveal">
+          <span class="idx">02</span>
+          <h3>Авто из Китая</h3>
+          <p>Chery, Haval, Geely, BYD, Changan и другие модели китайского рынка — с подбором, выкупом и доставкой под ключ до вашего города.</p>
+          <span class="tag">80+ моделей</span>
+        </div>
+        <div class="direction-card reveal">
+          <span class="idx">03</span>
+          <h3>Запчасти</h3>
+          <p>Оригинальные и контрактные запчасти для корейских автомобилей — от расходников и оптики до кузовных элементов, с доставкой по России.</p>
+          <span class="tag">Доставка по РФ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-head reveal" style="color:var(--cream);">
+        <span class="eyebrow">Как это работает</span>
+        <h2>Шесть шагов от договора до двора</h2>
+        <p style="color:rgba(239,237,227,.72);">Каждый этап фиксируется письменно и виден в личном кабинете — вы всегда знаете, где сейчас находится ваш автомобиль.</p>
+      </div>
+
+      <div class="process-track">
+        <div class="active">01 · Договор</div>
+        <div class="active">02 · Подбор</div>
+        <div>03 · Покупка</div>
+        <div>04 · Отправка</div>
+        <div>05 · Таможня</div>
+        <div>06 · Доставка</div>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="step-num">01</div>
+          <h3>Договор</h3>
+          <p>Фиксируем условия сделки и требования к автомобилю. За вами закрепляется личный менеджер на всё время работы.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">02</div>
+          <h3>Подбор</h3>
+          <p>Ищем варианты на аукционах и у дилеров, присылаем фото- и видеоотчёт по каждому подходящему автомобилю.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">03</div>
+          <h3>Покупка</h3>
+          <p>Проверяем документы и историю автомобиля, выкупаем его по согласованной и зафиксированной цене.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">04</div>
+          <h3>Отправка</h3>
+          <p>Организуем перевозку до порта и погрузку на судно, отслеживаем груз на всём пути до Владивостока.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">05</div>
+          <h3>Таможня</h3>
+          <p>Готовим документы и проходим таможенное оформление, оформляем ПТС и передаточные документы.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">06</div>
+          <h3>Доставка</h3>
+          <p>Отправляем автомобиль в ваш город или передаём на месте — с полным пакетом документов на руки.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="why">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Почему с нами спокойнее</span>
+        <h2>Прозрачность на каждом шаге</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></div>
+          <h3>Осмотр до оплаты</h3>
+          <p>Каждый автомобиль проходит фото- и видеоосмотр специалистом прежде, чем вы переводите деньги за покупку.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l3-3h10l3 3v3H4z"/><path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 15h6"/></svg></div>
+          <h3>Цена без сюрпризов</h3>
+          <p>Стоимость под ключ фиксируется в договоре до сделки — логистика, таможня и оформление уже включены.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg></div>
+          <h3>Личный кабинет</h3>
+          <p>Статус сделки, документы и фотоотчёты — в одном окне, без звонков «узнать, как там дела».</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Юридическое сопровождение</h3>
+          <p>Договор, таможенные документы и постановка на учёт — берём на себя всю бумажную часть сделки.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="13" height="8" rx="1"/><path d="M15 12h4l3 3v2h-7z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg></div>
+          <h3>Доставка по всей России</h3>
+          <p>Забираем во Владивостоке и везём дальше — собственным транспортом или проверенными партнёрами.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4-7.2"/><path d="M21 4v5h-5"/></svg></div>
+          <h3>Присутствие в двух странах</h3>
+          <p>Свои представители в Корее и Китае: смотрим автомобиль вживую, а не полагаемся на фото продавца.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section class="bg-card" id="catalog">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Каталог</span>
+        <h2>Популярные модели</h2>
+        <p>Ориентировочная стоимость под ключ до Владивостока — точную цену считаем индивидуально под комплектацию и год выпуска.</p>
+      </div>
+
+      <div class="catalog-grid">
+        <div class="model-card reveal"><span class="flag">Корея</span><h4>Kia K5</h4><div class="price">от 1.6 до 2.6 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Корея</span><h4>Hyundai Tucson</h4><div class="price">от 2.1 до 3.1 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Корея</span><h4>Genesis G80</h4><div class="price">от 3.2 до 5.4 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Корея</span><h4>Kia Sportage</h4><div class="price">от 1.9 до 2.9 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Китай</span><h4>Chery Tiggo 7 Pro</h4><div class="price">от 1.7 до 2.4 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Китай</span><h4>Haval Jolion</h4><div class="price">от 1.4 до 2.0 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Китай</span><h4>Geely Coolray</h4><div class="price">от 1.5 до 2.1 млн ₽</div></div>
+        <div class="model-card reveal"><span class="flag">Китай</span><h4>BYD Song Plus</h4><div class="price">от 2.0 до 2.8 млн ₽</div></div>
+      </div>
+      <div class="catalog-note">* цены ориентировочные, под ключ до Владивостока, на дату запроса</div>
+    </div>
+  </section>
+
+  <!-- GUARANTEES -->
+  <section class="guarantees" id="guarantees">
+    <div class="container">
+      <div class="guarantee-head">
+        <div class="stamp reveal" aria-hidden="true"><span>Цена фикс.<br>в договоре</span></div>
+        <div class="section-head reveal" style="margin-bottom:0;color:var(--cream);">
+          <span class="eyebrow">Гарантии</span>
+          <h2>Что закреплено письменно</h2>
+        </div>
+      </div>
+
+      <div class="guarantees-grid">
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l3-3h10l3 3v3H4z"/><path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/></svg></div>
+          <h3>Фиксированная цена</h3>
+          <p>Стоимость под ключ закрепляется в договоре до сделки — она не меняется по ходу доставки.</p>
+        </div>
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></div>
+          <h3>Осмотр перед покупкой</h3>
+          <p>Фото и видео каждого автомобиля от наших специалистов на месте, до перевода денег.</p>
+        </div>
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></div>
+          <h3>Официальный договор</h3>
+          <p>Юридически оформленная сделка на каждом этапе — от подбора до постановки на учёт.</p>
+        </div>
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6M4 6l4 3M4 6l-4 3" transform="translate(2,0)"/><path d="M20 5v13M20 18l-4-3M20 18l4-3" transform="translate(-2,0)"/></svg></div>
+          <h3>Прозрачные платежи</h3>
+          <p>Вы видите каждую статью расходов: цена автомобиля, логистика, таможня, услуги.</p>
+        </div>
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg></div>
+          <h3>Личный кабинет</h3>
+          <p>Статусы сделки, документы и фотоотчёты — доступны онлайн в любое время.</p>
+        </div>
+        <div class="guarantee-card reveal">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <h3>Всегда на связи</h3>
+          <p>Менеджер отвечает в мессенджерах в течение рабочего дня на любом этапе сделки.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="bg-card" id="reviews">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Отзывы</span>
+        <h2>Что говорят клиенты</h2>
+      </div>
+
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">Заказывал Sportage: каждый день присылали, на каком этапе автомобиль. Цена не изменилась ни на рубль от той, что была в договоре.</p>
+          <div class="testi-who"><div class="testi-avatar">ИН</div><div><div class="name">Игорь</div><div class="city">Новосибирск</div></div></div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">Переживала, что беру автомобиль «вслепую», но видеоосмотр снял почти все вопросы — машина пришла в точности как на видео.</p>
+          <div class="testi-who"><div class="testi-avatar">МК</div><div><div class="name">Марина</div><div class="city">Казань</div></div></div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">Взял Tiggo 7 из Китая — заметно дешевле, чем аналогичная комплектация у дилера в России. Оформили всё за две недели.</p>
+          <div class="testi-who"><div class="testi-avatar">ДС</div><div><div class="name">Дмитрий</div><div class="city">Краснодар</div></div></div>
+        </div>
+      </div>
+      <p class="testi-note">* пример оформления блока — замените на реальные отзывы своих клиентов</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+        <span class="eyebrow">Частые вопросы</span>
+        <h2>Прежде чем оставить заявку</h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <details class="faq-item">
+          <summary>Как я могу быть уверен, что меня не обманут?<span class="plus"></span></summary>
+          <p>Каждый шаг сделки фиксируется в договоре, а цену на конкретный автомобиль можно сверить самостоятельно на аукционных площадках Кореи и Китая. Фото- и видеоосмотр проводится до перевода денег за покупку.</p>
+        </details>
+        <details class="faq-item">
+          <summary>В каком состоянии приходят автомобили?<span class="plus"></span></summary>
+          <p>Перед покупкой автомобиль осматривает специалист на площадке — присылаем фото и видео по кузову, салону и ходовой части, честно отмечаем все дефекты, если они есть.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Сколько времени занимает доставка?<span class="plus"></span></summary>
+          <p>От покупки до получения ПТС во Владивостоке обычно уходит 10–14 дней, дальше — доставка в ваш город по согласованному маршруту.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что входит в цену «под ключ»?<span class="plus"></span></summary>
+          <p>Стоимость автомобиля, логистика до Владивостока, таможенные платежи и оформление документов — без доплат сверху зафиксированной суммы.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Можно ли заказать автомобиль из Китая?<span class="plus"></span></summary>
+          <p>Да, работаем с китайскими площадками так же, как с корейскими — от подбора и осмотра до выкупа и растаможки.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Как отслеживать статус заказа?<span class="plus"></span></summary>
+          <p>В личном кабинете видно текущий этап сделки, документы и фотоотчёты — без необходимости постоянно звонить менеджеру.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Это выгоднее, чем купить в России?<span class="plus"></span></summary>
+          <p>В среднем да, за счёт разницы цен на рынках Кореи и Китая, но многое зависит от конкретной модели и комплектации — точный расчёт делаем индивидуально.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacts">
+    <div class="container contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">Бесплатный расчёт</span>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);margin-top:12px;">Оставьте заявку на подбор</h2>
+        <p style="margin-top:12px;color:var(--ink-muted);">Пришлём фото и видео подходящих автомобилей и точную цену под ключ в течение рабочего дня.</p>
+
+        <form class="contact-form" id="lead-form" style="margin-top:28px;" novalidate>
+          <div>
+            <label for="f-name">Имя</label>
+            <input id="f-name" name="name" type="text" required autocomplete="name" placeholder="Как к вам обращаться">
+          </div>
+          <div>
+            <label for="f-phone">Телефон</label>
+            <input id="f-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+7 (___) ___-__-__">
+          </div>
+          <div>
+            <label for="f-model">Что подбираем</label>
+            <input id="f-model" name="model" type="text" autocomplete="off" placeholder="Марка, модель или бюджет — необязательно">
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">Отправить заявку</button>
+          <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+          <div class="form-success" id="form-success">Заявка принята — свяжемся с вами в ближайшее рабочее время.</div>
+        </form>
+      </div>
+
+      <div class="contact-side reveal">
+        <div class="item">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.8 2.2z"/></svg></div>
+          <div><div class="lbl">Телефон</div><div class="val"><a href="tel:+70000000000">+7 (000) 000-00-00</a></div></div>
+        </div>
+        <div class="item">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4.1-1L3 20l1.2-5.2a8.4 8.4 0 1 1 16.8-3.3z"/></svg></div>
+          <div><div class="lbl">WhatsApp / Telegram</div><div class="val"><a href="#">Написать менеджеру</a></div></div>
+        </div>
+        <div class="item">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10.5" r="3"/></svg></div>
+          <div><div class="lbl">Представительства</div><div class="val">Корея · Китай</div></div>
+        </div>
+        <div class="item">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <div><div class="lbl">Режим работы</div><div class="val">Пн–Вс, без выходных</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo" style="color:var(--cream);">
+          <svg width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1E3B54"/><circle cx="16" cy="11" r="3.4" fill="none" stroke="#BE8A3E" stroke-width="2"/><path d="M16 14.4V25M9 20c1.8 3 4.2 4.6 7 4.6s5.2-1.6 7-4.6" fill="none" stroke="#BE8A3E" stroke-width="2" stroke-linecap="round"/></svg>
+          ПРИЧАЛ
+        </div>
+        <p>Импорт автомобилей и запчастей из Кореи и Китая под ключ — от подбора до постановки на учёт.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Услуги</h4>
+        <ul>
+          <li><a href="#directions">Авто из Кореи</a></li>
+          <li><a href="#directions">Авто из Китая</a></li>
+          <li><a href="#catalog">Каталог</a></li>
+          <li><a href="#directions">Запчасти</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="#process">Как это работает</a></li>
+          <li><a href="#guarantees">Гарантии</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#faq">Вопросы</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="tel:+70000000000">+7 (000) 000-00-00</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">Telegram</a></li>
+          <li><a href="#contacts">Оставить заявку</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> ПРИЧАЛ</span>
+      <span class="legal-note">Шаблон сайта. Перед публикацией замените контакты, реквизиты и правовые документы на реальные — а раздел с отзывами на подлинные отзывы клиентов.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.documentElement.classList.add('js-ready');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var form = document.getElementById('lead-form');
+  var success = document.getElementById('form-success');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    // Заглушка отправки: подключите свой backend / Telegram-бота / почтовый сервис.
+    success.classList.add('show');
+    form.reset();
+  });
+</script>
+</body>
+</html>
