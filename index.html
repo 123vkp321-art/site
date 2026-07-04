@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ПРИЧАЛ — импорт автомобилей из Кореи и Китая под ключ</title>
+<title>K-TRADE AMC — импорт автомобилей из Кореи и Китая под ключ</title>
 <meta name="description" content="Подбираем, осматриваем и привозим автомобили из Кореи и Китая под ключ. Фиксированная цена в договоре, фото- и видеоосмотр, доставка по всей России.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1E2B'/%3E%3Ccircle cx='16' cy='11' r='3.4' fill='none' stroke='%23BE8A3E' stroke-width='2'/%3E%3Cpath d='M16 14.4V25M9 20c1.8 3 4.2 4.6 7 4.6s5.2-1.6 7-4.6' fill='none' stroke='%23BE8A3E' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -216,6 +216,40 @@
   }
 
   @media (max-width:920px){.directions-grid{grid-template-columns:1fr;}}
+
+  /* Director welcome */
+  .director{background:var(--card);}
+  .director-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:48px;align-items:center;}
+  .director-text blockquote{
+    margin:18px 0 0;font-family:var(--ff-display);font-weight:500;font-size:1.28rem;
+    line-height:1.45;color:var(--ink);max-width:52ch;
+  }
+  .director-sign{display:flex;align-items:center;gap:14px;margin-top:26px;}
+  .director-sign .av{
+    width:50px;height:50px;border-radius:50%;background:var(--navy);color:var(--brass);
+    display:flex;align-items:center;justify-content:center;font-family:var(--ff-mono);
+    font-size:.85rem;flex:none;
+  }
+  .director-sign .name{font-weight:700;font-size:.98rem;}
+  .director-sign .role{font-size:.84rem;color:var(--ink-faint);}
+
+  .video-window{
+    max-width:340px;margin-left:auto;margin-right:auto;
+    border-radius:18px;overflow:hidden;background:var(--navy);
+    border:1px solid var(--line);box-shadow:0 24px 48px rgba(14,30,43,.18);
+  }
+  .video-window video{
+    width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:var(--navy);
+  }
+  .video-caption{
+    margin-top:14px;text-align:center;font-family:var(--ff-mono);font-size:.74rem;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);
+  }
+
+  @media (max-width:920px){
+    .director-grid{grid-template-columns:1fr;}
+    .video-window{order:-1;max-width:300px;}
+  }
 
   /* Process */
   .process{background:var(--navy);color:var(--cream);}
@@ -442,6 +476,33 @@
           <text x="434" y="344" text-anchor="middle" fill="#EFEDE3" font-family="IBM Plex Mono" font-size="11" letter-spacing="1">ВАШ ГОРОД</text>
         </svg>
         <div class="route-card"><span class="dot"></span> Груз в пути · этап 04 из 06</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECTOR WELCOME -->
+  <section class="director" id="director">
+    <div class="container director-grid">
+      <div class="director-text reveal">
+        <span class="eyebrow">Личное обращение</span>
+        <blockquote>«Мы начинали с простой идеи: покупать автомобиль за границей должно быть так же спокойно, как в соседнем автосалоне. Каждую машину проверяют наши люди на месте — в Корее и в Китае, — и я лично отвечаю за то, что написано в договоре».</blockquote>
+        <div class="director-sign">
+          <div class="av">ИФ</div>
+          <div>
+            <div class="name">[Имя Фамилия]</div>
+            <div class="role">основатель «ПРИЧАЛ»</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="video-window">
+          <video controls playsinline preload="metadata" poster="video/privet-poster.jpg">
+            <source src="video/privet-rukovoditelya.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео. <a href="video/privet-rukovoditelya.mp4">Скачать файл</a>.
+          </video>
+        </div>
+        <div class="video-caption">Видео-обращение · 0:42</div>
       </div>
     </div>
   </section>
@@ -794,7 +855,7 @@
       <div class="footer-col">
         <h4>Контакты</h4>
         <ul>
-          <li><a href="tel:+70000000000">+7 (000) 000-00-00</a></li>
+          <li><a href="tel:+8210779946">+82 (10) 7799-5046</a></li>
           <li><a href="#">WhatsApp</a></li>
           <li><a href="#">Telegram</a></li>
           <li><a href="#contacts">Оставить заявку</a></li>
@@ -803,7 +864,7 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© <span id="year"></span> ПРИЧАЛ</span>
+      <span>© <span id="year"></span> K-TRADE AMC</span>
       <span class="legal-note">Шаблон сайта. Перед публикацией замените контакты, реквизиты и правовые документы на реальные — а раздел с отзывами на подлинные отзывы клиентов.</span>
     </div>
   </div>
